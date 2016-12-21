@@ -6,7 +6,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
+import com.giljulio.adorables.App;
 import com.giljulio.adorables.R;
+import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.model.Adorable;
 
 import java.util.List;
@@ -19,13 +21,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     @Bind(R.id.swipe_to_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.card_list) RecyclerView recyclerView;
 
-    private MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
+    private MainActivityPresenter mainActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        AppComponent appComponent = ((App) getApplication()).getAppComponent();
+        mainActivityPresenter = new MainActivityPresenter(this);
+        appComponent.inject(mainActivityPresenter);
+
         mainActivityPresenter.bind();
     }
 

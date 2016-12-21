@@ -5,27 +5,25 @@ import com.giljulio.adorables.net.FakeApiService;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 
-class MainActivityPresenter {
+public class MainActivityPresenter {
 
     private final View view;
     private CompositeSubscription compositeSubscription;
-    private final FakeApiService apiService;
+    private FakeApiService apiService;
+
+    @Inject Retrofit retrofit;
 
     MainActivityPresenter(View view) {
         this.view = view;
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(FakeApiService.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        apiService = retrofit.create(FakeApiService.class);
     }
 
     void bind() {
+        apiService = retrofit.create(FakeApiService.class);
         compositeSubscription = new CompositeSubscription();
         fetchAdorables();
     }

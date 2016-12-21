@@ -4,6 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 project.ext {
     support_library = "25.0.1"
     retrofit = "2.1.0"
+    dagger = "2.8"
 }
 
 android {
@@ -50,6 +51,11 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.0'
+
+    // di
+    compile "com.google.dagger:dagger:$dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
+
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

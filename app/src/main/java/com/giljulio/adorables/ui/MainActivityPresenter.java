@@ -8,6 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MainActivityPresenter {
@@ -35,10 +37,13 @@ public class MainActivityPresenter {
     void fetchAdorables() {
         view.showLoading();
         compositeSubscription.add(apiService.getAdorables()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adorables -> {
                     view.hideLoading();
                     view.showAdorables(adorables);
                 }, throwable -> {
+                    throwable.printStackTrace();
                     view.hideLoading();
                     view.showError();
                 }));

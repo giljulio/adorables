@@ -9,7 +9,7 @@ import rx.Observable;
 
 public interface FakeApiService {
 
-    String BASE_URL = "http;//jsonplaceholder.typicode.com";
+    String BASE_URL = "http://jsonplaceholder.typicode.com";
 
     @GET("/users")
     Observable<List<Adorable>> getAdorables();

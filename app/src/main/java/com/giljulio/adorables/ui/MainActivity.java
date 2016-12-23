@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 
 import com.giljulio.adorables.App;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     @Bind(R.id.card_list) RecyclerView recyclerView;
 
     private MainActivityPresenter mainActivityPresenter;
+    private LineUpAdapter lineUpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Setup recycler view
+        lineUpAdapter = new LineUpAdapter();
+        recyclerView.setAdapter(lineUpAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(recyclerView);
+
+        // Setup presenter
         AppComponent appComponent = ((App) getApplication()).getAppComponent();
         mainActivityPresenter = new MainActivityPresenter(this);
         appComponent.inject(mainActivityPresenter);
@@ -43,8 +57,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     }
 
     @Override
-    public void showAdorables(List<Adorable> adorable) {
-
+    public void showAdorables(List<Adorable> adorables) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new AdorableDiffUtilCallback(lineUpAdapter.getItems(), adorables));
+        lineUpAdapter.setItems(adorables);
+        diffResult.dispatchUpdatesTo(lineUpAdapter);
     }
 
     @Override

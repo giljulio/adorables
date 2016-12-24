@@ -1,4 +1,4 @@
-package com.giljulio.adorables.ui;
+package com.giljulio.adorables.ui.screens.lineup;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,9 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import com.giljulio.adorables.App;
 import com.giljulio.adorables.R;
 import com.giljulio.adorables.dagger.component.AppComponent;
-import com.giljulio.adorables.model.Adorable;
+import com.giljulio.adorables.net.model.User;
+import com.giljulio.adorables.ui.model.Adorable;
+import com.giljulio.adorables.ui.model.AdorableDiffUtilCallback;
+import com.giljulio.adorables.net.ImageLoader;
+import com.giljulio.adorables.ui.widget.InkPageIndicator;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,9 +29,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     @Bind(R.id.swipe_to_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.card_list) RecyclerView recyclerView;
+    @Bind(R.id.indicator) InkPageIndicator inkPageIndicator;
+
+    @Inject ImageLoader imageLoader;
 
     private MainActivityPresenter mainActivityPresenter;
     private LineUpAdapter lineUpAdapter;
+    private PagerSnapHelper pagerSnapHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +43,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        AppComponent appComponent = ((App) getApplication()).getAppComponent();
+        appComponent.inject(this);
+
+        // Setup presenter
+        mainActivityPresenter = new MainActivityPresenter(this);
+        appComponent.inject(mainActivityPresenter);
+
         // Setup recycler view
-        lineUpAdapter = new LineUpAdapter();
+        lineUpAdapter = new LineUpAdapter(imageLoader);
         recyclerView.setAdapter(lineUpAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(recyclerView);
 
-        // Setup presenter
-        AppComponent appComponent = ((App) getApplication()).getAppComponent();
-        mainActivityPresenter = new MainActivityPresenter(this);
-        appComponent.inject(mainActivityPresenter);
 
         mainActivityPresenter.bind();
     }
@@ -61,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new AdorableDiffUtilCallback(lineUpAdapter.getItems(), adorables));
         lineUpAdapter.setItems(adorables);
         diffResult.dispatchUpdatesTo(lineUpAdapter);
+        /*inkPageIndicator.setRecyclerView(recyclerView, pagerSnapHelper);*/
     }
 
     @Override

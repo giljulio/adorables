@@ -1,6 +1,6 @@
-package com.giljulio.adorables.model;
+package com.giljulio.adorables.net.model;
 
-public class Adorable {
+public class User {
 
     private int id;
     private String name;

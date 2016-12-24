@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-apt'
 
 project.ext {
     support_library = "25.1.0"
@@ -43,6 +44,11 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofit"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofit"
     compile "com.squareup.retrofit2:converter-gson:$retrofit"
+    provided 'com.google.auto.value:auto-value:1.2'
+    apt 'com.google.auto.value:auto-value:1.2'
+    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    compile "com.google.dagger:dagger:$dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
 
     // rx
     compile 'io.reactivex:rxandroid:1.1.0'
@@ -52,14 +58,11 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.0'
-
-    // di
-    compile "com.google.dagger:dagger:$dagger"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
+    compile 'io.sweers.rxpalette:rxpalette:0.3.0'
 
     // misc
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     // testing
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

@@ -1,7 +1,7 @@
-package com.giljulio.adorables.ui;
+package com.giljulio.adorables.ui.screens.lineup;
 
-import com.giljulio.adorables.model.Adorable;
 import com.giljulio.adorables.net.FakeApiService;
+import com.giljulio.adorables.ui.model.Adorable;
 
 import java.util.List;
 
@@ -36,7 +36,8 @@ public class MainActivityPresenter {
 
     void fetchAdorables() {
         view.showLoading();
-        compositeSubscription.add(apiService.getAdorables()
+        compositeSubscription.add(apiService.getUsers()
+                .flatMap(Adorable::from)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adorables -> {

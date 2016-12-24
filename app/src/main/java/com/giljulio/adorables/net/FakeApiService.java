@@ -1,6 +1,6 @@
 package com.giljulio.adorables.net;
 
-import com.giljulio.adorables.model.Adorable;
+import com.giljulio.adorables.net.model.User;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ public interface FakeApiService {
     String BASE_URL = "http://jsonplaceholder.typicode.com";
 
     @GET("/users")
-    Observable<List<Adorable>> getAdorables();
+    Observable<List<User>> getUsers();
 
 }

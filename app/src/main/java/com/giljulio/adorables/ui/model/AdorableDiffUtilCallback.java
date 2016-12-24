@@ -1,8 +1,6 @@
-package com.giljulio.adorables.ui;
+package com.giljulio.adorables.ui.model;
 
 import android.support.v7.util.DiffUtil;
-
-import com.giljulio.adorables.model.Adorable;
 
 import java.util.List;
 

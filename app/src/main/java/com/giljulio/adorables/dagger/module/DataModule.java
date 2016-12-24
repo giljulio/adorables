@@ -1,5 +1,10 @@
 package com.giljulio.adorables.dagger.module;
 
+import android.content.Context;
+
+import com.giljulio.adorables.net.PicassoImageLoader;
+import com.giljulio.adorables.net.ImageLoader;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -11,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class DataModule {
 
-    String baseUrl;
+    private String baseUrl;
 
     public DataModule(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -26,4 +31,9 @@ public class DataModule {
                 .build();
     }
 
+    @Provides
+    @Singleton
+    ImageLoader provideImageLoader(Context context) {
+        return new PicassoImageLoader(context);
+    }
 }

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 public class PicassoImageLoader implements ImageLoader {
 
@@ -15,9 +16,14 @@ public class PicassoImageLoader implements ImageLoader {
     }
 
     @Override
-    public void loadImage(String url, ImageView imageView, Callback callback) {
-        Picasso.with(context)
-                .load(url)
-                .into(imageView, callback);
+    public void loadImage(String url, Config config, ImageView imageView, Callback callback) {
+        RequestCreator creator = Picasso.with(context)
+                .load(url);
+
+        if (config.circular)
+            creator.transform(new CircleTransform());
+
+        creator.into(imageView, callback);
     }
+
 }

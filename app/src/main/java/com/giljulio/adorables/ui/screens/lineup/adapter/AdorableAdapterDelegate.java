@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.giljulio.adorables.R;
 import com.giljulio.adorables.net.AdorableImageFetcher;
+import com.giljulio.adorables.net.ImageLoader;
 import com.giljulio.adorables.ui.model.Adorable;
 import com.giljulio.adorables.ui.screens.closeup.DetailActivity;
 import com.giljulio.adorables.utils.ColorUtils;
@@ -51,7 +52,7 @@ class AdorableAdapterDelegate extends AbsListItemAdapterDelegate<Adorable, Adora
     protected void onBindViewHolder(@NonNull Adorable item, @NonNull AdorableViewHolder viewHolder, @NonNull List<Object> payloads) {
         viewHolder.nameView.setText(item.getName());
 
-        adorableImageFetcher.fetch(item.getEmail(), 200, viewHolder.thumbnailView)
+        adorableImageFetcher.fetch(item.getEmail(), new ImageLoader.Config(false, 200), viewHolder.thumbnailView)
                 .map(ColorUtils::extractColor)
                 .subscribe(color -> {
                     viewHolder.cardView.setCardBackgroundColor(color);

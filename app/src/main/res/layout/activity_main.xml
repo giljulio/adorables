@@ -37,6 +37,10 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
+            android:scrollbars="horizontal"
+            android:scrollbarStyle="outsideOverlay"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
             tools:context=".ui.screens.lineup.MainActivity"/>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

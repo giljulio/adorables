@@ -23,8 +23,7 @@ public class ColorUtils {
     /**
      * Returns darker version of specified <code>color</code>.
      */
-    public static @CheckResult @ColorInt int darker(@ColorInt int color,
-                                                    @FloatRange(from = 0f, to = 1f) float factor) {
+    public static @CheckResult @ColorInt int darker(@ColorInt int color, float factor) {
         int a = Color.alpha(color);
         int r = Color.red( color );
         int g = Color.green( color );

@@ -14,7 +14,6 @@
         android:layout_margin="32dp"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
-        app:cardBackgroundColor="#EFD967"
         app:cardElevation="8dp">
 
         <LinearLayout
@@ -22,7 +21,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="32dp">
+            android:padding="32dp"
+            tools:background="#EFD967">
 
             <ImageView
                 android:id="@+id/item_adorable_thumbnail"

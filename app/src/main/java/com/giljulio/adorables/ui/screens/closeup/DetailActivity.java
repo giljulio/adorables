@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.giljulio.adorables.App;
 import com.giljulio.adorables.R;
 import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.net.AdorableImageFetcher;
+import com.giljulio.adorables.net.ImageLoader;
 import com.giljulio.adorables.ui.model.Adorable;
 import com.giljulio.adorables.ui.model.diff.DiffUtilCallback;
 import com.giljulio.adorables.ui.model.diff.Identifiable;
@@ -42,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.comments_list) RecyclerView recyclerView;
+    @Bind(R.id.swipe_to_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.color_backdrop) View colorBackdrop;
 
     @Inject AdorableImageFetcher adorableImageFetcher;
@@ -74,16 +77,18 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
 
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationOnClickListener(v -> finishAfterTransition());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(adorable.getName());
 
         postponeEnterTransition();
 
-        adorableImageFetcher.fetch(adorable.getEmail(), 200, appBarBackdrop)
+        adorableImageFetcher.fetch(adorable.getEmail(), new ImageLoader.Config(false, 200), appBarBackdrop)
                 .map(ColorUtils::extractColor)
                 .subscribe(color -> {
                     colorBackdrop.setBackgroundColor(color);
-                    collapsingToolbarLayout.setStatusBarScrimColor(ColorUtils.darker(color, 0.2F));
+                    collapsingToolbarLayout.setStatusBarScrimColor(ColorUtils.darker(color, 0.8F));
+                    collapsingToolbarLayout.setContentScrimColor(color);
                     startPostponedEnterTransition();
                 });
 
@@ -104,8 +109,13 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
     }
 
     @Override
-    public void hideLoading() {
+    public void showLoading() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
 
+    @Override
+    public void hideLoading() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

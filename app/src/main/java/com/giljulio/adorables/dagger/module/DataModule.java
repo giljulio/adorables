@@ -46,7 +46,6 @@ public class DataModule {
     }
 
     @Provides
-    @Singleton
     AdorableImageFetcher provideImageFetcher(ImageLoader imageLoader) {
         return new AdorableImageFetcher(imageLoader);
     }

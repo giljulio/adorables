@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.giljulio.adorables.R;
 import com.giljulio.adorables.net.AdorableImageFetcher;
+import com.giljulio.adorables.net.ImageLoader;
 import com.giljulio.adorables.ui.model.Reply;
 import com.giljulio.adorables.ui.model.diff.Identifiable;
 import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate;
@@ -42,7 +43,7 @@ class ReplyAdapterDelegate extends AbsListItemAdapterDelegate<Reply, Identifiabl
     @Override
     protected void onBindViewHolder(@NonNull Reply item, @NonNull CommentViewHolder viewHolder, @NonNull List<Object> payloads) {
         viewHolder.bodyView.setText(item.getBody());
-        adorableImageFetcher.fetch(item.getEmail(), 48, viewHolder.avatarView).subscribe();
+        adorableImageFetcher.fetch(item.getEmail(), new ImageLoader.Config(true, 48), viewHolder.avatarView).subscribe();
     }
 
     static class CommentViewHolder extends RecyclerView.ViewHolder {

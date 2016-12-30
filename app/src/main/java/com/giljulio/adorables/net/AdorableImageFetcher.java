@@ -19,13 +19,13 @@ public class AdorableImageFetcher {
         this.imageLoader = imageLoader;
     }
 
-    public Observable<ImageView> fetch(String email, int size, ImageView target) {
+    public Observable<ImageView> fetch(String email, ImageLoader.Config config, ImageView target) {
         return Observable.create(new Observable.OnSubscribe<ImageView>() {
 
             @Override
             public void call(Subscriber<? super ImageView> subscriber) {
-                String url = String.format(Locale.getDefault(), ADORABLE_API_URL, size, email);
-                imageLoader.loadImage(url, target, new Callback() {
+                String url = String.format(Locale.getDefault(), ADORABLE_API_URL, config.size, email);
+                imageLoader.loadImage(url, config, target, new Callback() {
                     @Override
                     public void onSuccess() {
                         subscriber.onNext(target);

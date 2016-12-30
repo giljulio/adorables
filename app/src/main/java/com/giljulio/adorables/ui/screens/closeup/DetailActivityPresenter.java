@@ -36,7 +36,7 @@ public class DetailActivityPresenter {
     }
 
     public void fetchChats(Adorable adorable) {
-
+        view.showLoading();
         compositeSubscription.add(apiService.getPosts(adorable.getId())
                 .flatMap(posts -> RxMapper.from(posts, Natter::create))
                 .flatMap(Observable::from)
@@ -60,6 +60,7 @@ public class DetailActivityPresenter {
     interface View {
         void setupList();
 
+        void showLoading();
         void hideLoading();
 
         void showChats(List<Identifiable> chats);

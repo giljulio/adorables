@@ -1,6 +1,7 @@
 language: android
 jdk:
   - oraclejdk8
+
 android:
   components:
     - platform-tools
@@ -17,6 +18,15 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-19
+
+script:
+  # By default, Travis runs `./gradlew build connectedCheck`. We don't want to run the integration
+  # tests, however, because they hit our dev server. So, instead we:
+  # - build the app
+  # - build and run the unit tests
+  # - build (but don't run) the app integration tests as well.
+  - ./gradlew build test :app:assembleAndroidTest
+
 before_install:
   - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
   - export JAVA_HOME=$JAVA8_HOME

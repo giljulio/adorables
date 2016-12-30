@@ -1,13 +1,12 @@
 package com.giljulio.adorables.ui.screens.lineup;
 
-import com.giljulio.adorables.net.FakeApiService;
+import com.giljulio.adorables.net.JsonPlaceholderService;
 import com.giljulio.adorables.ui.model.Adorable;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Retrofit;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -16,17 +15,16 @@ public class MainActivityPresenter {
 
     private final View view;
     private CompositeSubscription compositeSubscription;
-    private FakeApiService apiService;
+    @Inject JsonPlaceholderService apiService;
 
-    @Inject Retrofit retrofit;
 
     MainActivityPresenter(View view) {
         this.view = view;
     }
 
     void bind() {
-        apiService = retrofit.create(FakeApiService.class);
         compositeSubscription = new CompositeSubscription();
+        view.setupList();
         fetchAdorables();
     }
 
@@ -52,6 +50,7 @@ public class MainActivityPresenter {
 
     interface View {
 
+        void setupList();
         void showAdorables(List<Adorable> adorable);
         void showLoading();
         void hideLoading();

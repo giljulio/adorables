@@ -6,7 +6,7 @@ import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.dagger.component.DaggerAppComponent;
 import com.giljulio.adorables.dagger.module.AppModule;
 import com.giljulio.adorables.dagger.module.DataModule;
-import com.giljulio.adorables.net.FakeApiService;
+import com.giljulio.adorables.net.JsonPlaceholderService;
 
 public class App extends Application {
 
@@ -17,7 +17,7 @@ public class App extends Application {
         super.onCreate();
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .dataModule(new DataModule(FakeApiService.BASE_URL))
+                .dataModule(new DataModule(JsonPlaceholderService.BASE_URL))
                 .build();
 
     }

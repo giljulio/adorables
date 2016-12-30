@@ -12,11 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import com.giljulio.adorables.App;
 import com.giljulio.adorables.R;
 import com.giljulio.adorables.dagger.component.AppComponent;
-import com.giljulio.adorables.net.model.User;
+import com.giljulio.adorables.net.AdorableImageFetcher;
 import com.giljulio.adorables.ui.model.Adorable;
 import com.giljulio.adorables.ui.model.AdorableDiffUtilCallback;
-import com.giljulio.adorables.net.ImageLoader;
-import com.giljulio.adorables.ui.widget.InkPageIndicator;
 
 import java.util.List;
 
@@ -29,9 +27,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     @Bind(R.id.swipe_to_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.card_list) RecyclerView recyclerView;
-    @Bind(R.id.indicator) InkPageIndicator inkPageIndicator;
 
-    @Inject ImageLoader imageLoader;
+    @Inject AdorableImageFetcher adorableImageFetcher;
 
     private MainActivityPresenter mainActivityPresenter;
     private LineUpAdapter lineUpAdapter;
@@ -51,15 +48,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         appComponent.inject(mainActivityPresenter);
 
         // Setup recycler view
-        lineUpAdapter = new LineUpAdapter(imageLoader);
-        recyclerView.setAdapter(lineUpAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(recyclerView);
-
-
         mainActivityPresenter.bind();
     }
 
@@ -67,6 +55,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     protected void onDestroy() {
         super.onDestroy();
         mainActivityPresenter.unbind();
+    }
+
+    @Override
+    public void setupList() {
+        lineUpAdapter = new LineUpAdapter(this, adorableImageFetcher);
+        recyclerView.setAdapter(lineUpAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override

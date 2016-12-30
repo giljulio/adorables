@@ -2,6 +2,8 @@ package com.giljulio.adorables.dagger.module;
 
 import android.content.Context;
 
+import com.giljulio.adorables.net.AdorableImageFetcher;
+import com.giljulio.adorables.net.JsonPlaceholderService;
 import com.giljulio.adorables.net.PicassoImageLoader;
 import com.giljulio.adorables.net.ImageLoader;
 
@@ -33,7 +35,19 @@ public class DataModule {
 
     @Provides
     @Singleton
+    JsonPlaceholderService provideJsonPlaceholderService(Retrofit retrofit) {
+        return retrofit.create(JsonPlaceholderService.class);
+    }
+
+    @Provides
+    @Singleton
     ImageLoader provideImageLoader(Context context) {
         return new PicassoImageLoader(context);
+    }
+
+    @Provides
+    @Singleton
+    AdorableImageFetcher provideImageFetcher(ImageLoader imageLoader) {
+        return new AdorableImageFetcher(imageLoader);
     }
 }

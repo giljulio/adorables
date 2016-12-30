@@ -14,7 +14,7 @@ import com.giljulio.adorables.R;
 import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.net.AdorableImageFetcher;
 import com.giljulio.adorables.ui.model.Adorable;
-import com.giljulio.adorables.ui.model.AdorableDiffUtilCallback;
+import com.giljulio.adorables.ui.model.diff.DiffUtilCallback;
 
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     @Override
     public void showAdorables(List<Adorable> adorables) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new AdorableDiffUtilCallback(lineUpAdapter.getItems(), adorables));
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtilCallback<>(lineUpAdapter.getItems(), adorables));
         lineUpAdapter.setItems(adorables);
         diffResult.dispatchUpdatesTo(lineUpAdapter);
         /*inkPageIndicator.setRecyclerView(recyclerView, pagerSnapHelper);*/

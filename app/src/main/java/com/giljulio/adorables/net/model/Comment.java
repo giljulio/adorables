@@ -2,11 +2,17 @@ package com.giljulio.adorables.net.model;
 
 import com.giljulio.adorables.ui.model.Chat;
 
-public class User implements Chat {
+public class Comment implements Chat {
 
+    private int postId;
     private int id;
     private String name;
     private String email;
+    private String body;
+
+    public int getPostId() {
+        return postId;
+    }
 
     public int getId() {
         return id;
@@ -20,8 +26,12 @@ public class User implements Chat {
         return email;
     }
 
+    public String getBody() {
+        return body;
+    }
+
     @Override
     public String getKey() {
-        return User.class.getSimpleName() + String.valueOf(getId());
+        return Comment.class.getSimpleName() + String.valueOf(getId());
     }
 }

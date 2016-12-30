@@ -7,26 +7,36 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.giljulio.adorables.App;
 import com.giljulio.adorables.R;
+import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.net.AdorableImageFetcher;
 import com.giljulio.adorables.ui.model.Adorable;
+import com.giljulio.adorables.ui.model.Chat;
+import com.giljulio.adorables.ui.model.diff.DiffUtilCallback;
 import com.giljulio.adorables.utils.ColorUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements DetailActivityPresenter.View {
 
+    private static final String TAG = DetailActivity.class.getSimpleName();
 
-    public static final String KEY_ADORABLE = "adorable";
+    private static final String KEY_ADORABLE = "adorable";
+
     @Bind(R.id.appbar) AppBarLayout appBarLayout;
     @Bind(R.id.backdrop) ImageView appBarBackdrop;
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -35,6 +45,9 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.color_backdrop) View colorBackdrop;
 
     @Inject AdorableImageFetcher adorableImageFetcher;
+    private DetailActivityPresenter detailActivityPresenter;
+    private ChatAdapter chatAdapter;
+
 
     public static Intent createIntent(Context context, Adorable adorable) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -48,7 +61,11 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
-        ((App) getApplication()).getAppComponent().inject(this);
+        AppComponent appComponent = ((App) getApplication()).getAppComponent();
+        appComponent.inject(this);
+        detailActivityPresenter = new DetailActivityPresenter(this);
+        appComponent.inject(detailActivityPresenter);
+        detailActivityPresenter.bind();
 
         Adorable adorable = getIntent().getParcelableExtra(KEY_ADORABLE);
 
@@ -69,5 +86,33 @@ public class DetailActivity extends AppCompatActivity {
                     collapsingToolbarLayout.setStatusBarScrimColor(ColorUtils.darker(color, 0.2F));
                     startPostponedEnterTransition();
                 });
+
+        detailActivityPresenter.fetchChats(adorable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        detailActivityPresenter.unbind();
+    }
+
+    @Override
+    public void setupList() {
+        chatAdapter = new ChatAdapter();
+        recyclerView.setAdapter(chatAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showChats(List<Chat> chats) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtilCallback<>(chatAdapter.getItems(), chats));
+        chatAdapter.setItems(chats);
+        diffResult.dispatchUpdatesTo(chatAdapter);
+        Log.d(TAG, "showChats: " + chats.size());
     }
 }

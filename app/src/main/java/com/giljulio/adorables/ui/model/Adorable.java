@@ -19,7 +19,7 @@ public abstract class Adorable implements Parcelable, Identifiable {
 
     @Override
     public String getKey() {
-        return String.valueOf(getId());
+        return Adorable.class.getSimpleName() + String.valueOf(getId());
     }
 
     public static Adorable create(User user) {

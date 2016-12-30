@@ -1,4 +1,4 @@
-package com.giljulio.adorables.ui.screens.lineup;
+package com.giljulio.adorables.ui.screens.lineup.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -51,7 +51,7 @@ class AdorableAdapterDelegate extends AbsListItemAdapterDelegate<Adorable, Adora
     protected void onBindViewHolder(@NonNull Adorable item, @NonNull AdorableViewHolder viewHolder, @NonNull List<Object> payloads) {
         viewHolder.nameView.setText(item.getName());
 
-        adorableImageFetcher.fetch(item.getEmail(), viewHolder.thumbnailView)
+        adorableImageFetcher.fetch(item.getEmail(), 200, viewHolder.thumbnailView)
                 .map(ColorUtils::extractColor)
                 .subscribe(color -> {
                     viewHolder.cardView.setCardBackgroundColor(color);

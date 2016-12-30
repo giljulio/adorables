@@ -11,7 +11,6 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,8 +19,9 @@ import com.giljulio.adorables.R;
 import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.net.AdorableImageFetcher;
 import com.giljulio.adorables.ui.model.Adorable;
-import com.giljulio.adorables.ui.model.Chat;
 import com.giljulio.adorables.ui.model.diff.DiffUtilCallback;
+import com.giljulio.adorables.ui.model.diff.Identifiable;
+import com.giljulio.adorables.ui.screens.closeup.adapter.ChatAdapter;
 import com.giljulio.adorables.utils.ColorUtils;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
 
         postponeEnterTransition();
 
-        adorableImageFetcher.fetch(adorable.getEmail(), appBarBackdrop)
+        adorableImageFetcher.fetch(adorable.getEmail(), 200, appBarBackdrop)
                 .map(ColorUtils::extractColor)
                 .subscribe(color -> {
                     colorBackdrop.setBackgroundColor(color);
@@ -98,7 +98,7 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
 
     @Override
     public void setupList() {
-        chatAdapter = new ChatAdapter();
+        chatAdapter = new ChatAdapter(adorableImageFetcher);
         recyclerView.setAdapter(chatAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -109,10 +109,9 @@ public class DetailActivity extends AppCompatActivity implements DetailActivityP
     }
 
     @Override
-    public void showChats(List<Chat> chats) {
+    public void showChats(List<Identifiable> chats) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtilCallback<>(chatAdapter.getItems(), chats));
         chatAdapter.setItems(chats);
         diffResult.dispatchUpdatesTo(chatAdapter);
-        Log.d(TAG, "showChats: " + chats.size());
     }
 }

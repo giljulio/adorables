@@ -2,6 +2,7 @@ package com.giljulio.adorables.ui.screens.lineup;
 
 import com.giljulio.adorables.net.JsonPlaceholderService;
 import com.giljulio.adorables.ui.model.Adorable;
+import com.giljulio.adorables.utils.RxMapper;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class MainActivityPresenter {
     void fetchAdorables() {
         view.showLoading();
         compositeSubscription.add(apiService.getUsers()
-                .flatMap(Adorable::from)
+                .flatMap(users -> RxMapper.from(users, Adorable::create))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adorables -> {

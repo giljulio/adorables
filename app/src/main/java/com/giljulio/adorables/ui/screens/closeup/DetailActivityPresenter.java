@@ -2,7 +2,10 @@ package com.giljulio.adorables.ui.screens.closeup;
 
 import com.giljulio.adorables.net.JsonPlaceholderService;
 import com.giljulio.adorables.ui.model.Adorable;
-import com.giljulio.adorables.ui.model.Chat;
+import com.giljulio.adorables.ui.model.Natter;
+import com.giljulio.adorables.ui.model.Reply;
+import com.giljulio.adorables.ui.model.diff.Identifiable;
+import com.giljulio.adorables.utils.RxMapper;
 
 import java.util.List;
 
@@ -35,10 +38,13 @@ public class DetailActivityPresenter {
     public void fetchChats(Adorable adorable) {
 
         compositeSubscription.add(apiService.getPosts(adorable.getId())
+                .flatMap(posts -> RxMapper.from(posts, Natter::create))
                 .flatMap(Observable::from)
-                .flatMap(post -> Observable.merge(
-                        Observable.just(post), apiService.getComments(post.getId())
+                .flatMap(natter -> Observable.merge(
+                        Observable.just(natter), apiService.getComments(natter.getId())
+                                .flatMap(posts -> RxMapper.from(posts, Reply::create))
                                 .flatMap(Observable::from)))
+                .cast(Identifiable.class)
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,6 +62,6 @@ public class DetailActivityPresenter {
 
         void hideLoading();
 
-        void showChats(List<Chat> chats);
+        void showChats(List<Identifiable> chats);
     }
 }

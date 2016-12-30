@@ -1,8 +1,6 @@
 package com.giljulio.adorables.net.model;
 
-import com.giljulio.adorables.ui.model.Chat;
-
-public class Comment implements Chat {
+public class Comment {
 
     private int postId;
     private int id;
@@ -28,10 +26,5 @@ public class Comment implements Chat {
 
     public String getBody() {
         return body;
-    }
-
-    @Override
-    public String getKey() {
-        return Comment.class.getSimpleName() + String.valueOf(getId());
     }
 }

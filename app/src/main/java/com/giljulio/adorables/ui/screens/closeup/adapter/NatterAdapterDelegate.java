@@ -1,4 +1,4 @@
-package com.giljulio.adorables.ui.screens.closeup;
+package com.giljulio.adorables.ui.screens.closeup.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.giljulio.adorables.R;
-import com.giljulio.adorables.net.model.Post;
-import com.giljulio.adorables.ui.model.Chat;
+import com.giljulio.adorables.ui.model.Natter;
+import com.giljulio.adorables.ui.model.diff.Identifiable;
 import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate;
 
 import java.util.List;
@@ -17,22 +17,22 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-class PostAdapterDelegate extends AbsListItemAdapterDelegate<Post, Chat, PostAdapterDelegate.PostViewHolder> {
+class NatterAdapterDelegate extends AbsListItemAdapterDelegate<Natter, Identifiable, NatterAdapterDelegate.PostViewHolder> {
 
     @Override
-    protected boolean isForViewType(@NonNull Chat item, @NonNull List<Chat> items, int position) {
-        return item instanceof Post;
+    protected boolean isForViewType(@NonNull Identifiable item, @NonNull List<Identifiable> items, int position) {
+        return item instanceof Natter;
     }
 
     @NonNull
     @Override
     protected PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_natter, parent, false);
         return new PostViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull Post item, @NonNull PostViewHolder viewHolder, @NonNull List<Object> payloads) {
+    protected void onBindViewHolder(@NonNull Natter item, @NonNull PostViewHolder viewHolder, @NonNull List<Object> payloads) {
         viewHolder.titleView.setText(item.getTitle());
         viewHolder.bodyView.setText(item.getBody());
     }

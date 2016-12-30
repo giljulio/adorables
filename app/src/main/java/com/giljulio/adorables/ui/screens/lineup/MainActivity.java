@@ -15,6 +15,7 @@ import com.giljulio.adorables.dagger.component.AppComponent;
 import com.giljulio.adorables.net.AdorableImageFetcher;
 import com.giljulio.adorables.ui.model.Adorable;
 import com.giljulio.adorables.ui.model.diff.DiffUtilCallback;
+import com.giljulio.adorables.ui.screens.lineup.adapter.LineUpAdapter;
 
 import java.util.List;
 

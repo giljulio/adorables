@@ -1,4 +1,4 @@
-package com.giljulio.adorables.ui.screens.lineup;
+package com.giljulio.adorables.ui.screens.lineup.adapter;
 
 import android.app.Activity;
 
@@ -9,9 +9,9 @@ import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-class LineUpAdapter extends ListDelegationAdapter<List<Adorable>> {
+public class LineUpAdapter extends ListDelegationAdapter<List<Adorable>> {
 
-    LineUpAdapter(Activity activity, AdorableImageFetcher adorableImageFetcher) {
+    public LineUpAdapter(Activity activity, AdorableImageFetcher adorableImageFetcher) {
 
         delegatesManager.addDelegate(new AdorableAdapterDelegate(activity, adorableImageFetcher));
 

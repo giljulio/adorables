@@ -60,7 +60,6 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.0'
-    compile 'io.sweers.rxpalette:rxpalette:0.3.0'
 
     // misc
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.0'

@@ -11,7 +11,7 @@ Instead of using a ViewPager with Fragments I decided to use the new PagerSnapHe
 
 ### Stuff used to make this:
 
- * [Dagger 2](https://github.com/markdown-it/markdown-it) for dependency injection
+ * [Dagger 2](https://github.com/google/dagger) for dependency injection
  * [RxJava](https://github.com/ReactiveX/RxJava) Reactive Extensions for the JVM
  * [AutoValue](https://github.com/google/auto/tree/master/value) preprocessor to create immutable classes - used in conjunction with [AutoParcel](https://github.com/rharter/auto-value-parcel) to create Parcelable class implementation
  * [AdapterDelegates](https://github.com/sockeqwe/AdapterDelegates) "favour composition over inheritance" for RecyclerView Adapters

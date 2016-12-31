@@ -19,18 +19,27 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            if (System.getenv("TRAVIS")) {
+                storeFile rootProject.file('release.jks')
+                storePassword System.getenv("KEYSTORE_PASS")
+                keyAlias System.getenv("ALIAS_NAME")
+                keyPassword System.getenv("ALIAS_PASS")
+            } else {
+                storeFile new File("$STORE_FILE")
+                storePassword "$STORE_PASSWORD"
+                keyAlias "$KEY_ALIAS_ADORABLES"
+                keyPassword "$KEY_PASSWORD_ADORABLES"
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    signingConfigs {
-        release {
-            storeFile rootProject.file('release.jks')
-            storePassword System.getenv("KEYSTORE_PASS")
-            keyAlias System.getenv("ALIAS_NAME")
-            keyPassword System.getenv("ALIAS_PASS")
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
         }
     }
     lintOptions {

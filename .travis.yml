@@ -16,8 +16,8 @@ android:
 script:
 - "./travis.sh"
 before_install:
-- openssl aes-256-cbc -K $encrypted_5baf7760a3e1_key -iv $encrypted_5baf7760a3e1_iv
-  -in release.jks.enc -out release.jks -d
+- openssl aes-256-cbc -K $encrypted_5baf7760a3e1_key -iv $encrypted_5baf7760a3e1_iv -in travis_release_secrets.tar.enc -out travis_release_secrets.tar -d
+- tar xvf travis_release_secrets.tar
 - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
 - export JAVA_HOME=$JAVA8_HOME
 env:

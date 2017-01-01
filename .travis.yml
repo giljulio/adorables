@@ -1,6 +1,8 @@
 language: android
 jdk:
 - oraclejdk8
+git:
+  depth: 1000000
 android:
   components:
   - platform-tools
@@ -12,8 +14,11 @@ android:
   - extra-android-m2repository
   - addon-google_apis-google-19
 script:
-- "./gradlew build test :app:assembleAndroidTest"
+- "./travis.sh"
 before_install:
+- openssl aes-256-cbc -K $encrypted_5baf7760a3e1_key -iv $encrypted_5baf7760a3e1_iv
+  -in google_play_release_credentials.json.enc -out google_play_release_credentials.json
+  -d
 - openssl aes-256-cbc -K $encrypted_5baf7760a3e1_key -iv $encrypted_5baf7760a3e1_iv
   -in release.jks.enc -out release.jks -d
 - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
@@ -26,7 +31,7 @@ env:
   - secure: ZLMsFPZW4zl0PcvYKlkTl0oMHPr+t7pGyZ8ZwTRhoeynzMlFeNhOQyE1WkJyh/6IIxEBQvyetAjuHFFQZXpYmDdaMikBdMxbbuwE6Zz+sf+z8yllqiSS1W8zAJwHI2hKeyj3Ftaz5NpMY2RSiDCLJAj4ypjSv9qyHdY4BAM5riG2cy9j/VpYElziLYfPsC7eXBEMT2XDDIYeUGdIBVIzMlJ2NsnDCWq2hIsV+qm4iWYOpya3srZ6Kzua+ERx5MlG7WBL/WE8Apk8bC5cYjxNZggkI3oSb9rKkM3UzxPwOfULpD9SamwS9ZUKtw2DWuJTQ7+g7xSyOSdy7f5XDRuetdTyC44F/3ErH3GijIIkocHbFCplqVkv45oHG9/cMz2o3ax9fyjH9aLkPwrEWC28Wz9D/ym2QGldZTxF9RHtmZ77hy9cRHqIKFK07/kBOX8XglPAx0+124G5fD409b/JuPKnj8fcVb2aRWgHsYgC62rbxwWw2YbM2L0Bnktg97mA/KhMwQxt32Usr1YB2OolWZLhYyBGBhEyjYnyb3mepMGXqa6ALlyis7yYwXqoyxJXQpnVCp4fnx1MIIAmJkRc3zBoIE24nxSv/YX0I0WKHySJ6k/bwHgd2r66W+KNppiqyt6e5YOg/KZFJS2wrRkdFeT4xmMIEc4aGLJw4RzCRsg=
 deploy:
   provider: releases
-  api_key: $GITHUB_TOKEN
+  api_key: "$GITHUB_TOKEN"
   file: "$TRAVIS_BUILD_DIR/app/build/outputs/apk/app-release.apk"
   skip_cleanup: true
   on:

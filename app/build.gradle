@@ -1,12 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
+apply plugin: 'com.github.triplet.play'
 
 project.ext {
     support_library = "25.1.0"
     retrofit = "2.1.0"
     dagger = "2.8"
+    isTravis = System.getenv("TRAVIS")
 }
+
+// query git for the SHA, Tag and commit count. Use these to automate versioning.
+def gitTag = 'git describe --tags'.execute([], project.rootDir).text.trim()
+def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
 
 android {
     compileSdkVersion 25
@@ -15,13 +21,13 @@ android {
         applicationId "com.giljulio.adorables"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode gitCommitCount
+        versionName gitTag
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
-            if (System.getenv("TRAVIS")) {
+            if (isTravis) {
                 storeFile rootProject.file('release.jks')
                 storePassword System.getenv("KEYSTORE_PASS")
                 keyAlias System.getenv("ALIAS_NAME")
@@ -91,4 +97,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
+}
+
+play {
+    jsonFile = rootProject.file('google_play_release_credentials.json')
+    track = 'beta'
 }
